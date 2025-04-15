@@ -1,5 +1,6 @@
 package com.practice.CustomerService.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Value("${spring.security.user.name:}")
+    String userName;
+
+    @Value("${spring.security.password:}")
+    String password;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -19,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/saveCustomer").hasAnyRole("ADMIN")
                 .antMatchers("/eureka/**", "/actuator/**").permitAll()
+                .antMatchers("/message").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -28,8 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // In-memory authentication setup
         auth.inMemoryAuthentication()
-                .withUser("ADMIN")
-                .password("{noop}aRAEqKwguCRIb1a")
+                .withUser(userName)
+                .password("{noop}"+password)
                 .roles("ADMIN", "USER");
     }
 }
