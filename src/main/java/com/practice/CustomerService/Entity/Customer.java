@@ -7,7 +7,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    Long customer_id;
 
     @Column
     String cName;
@@ -16,7 +16,7 @@ public class Customer {
     String cDept;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    Payment payment;
+    private Payment payment;
 
     public Payment getPayment() {
         return payment;
@@ -27,11 +27,11 @@ public class Customer {
     }
 
     public Long getId() {
-        return id;
+        return customer_id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.customer_id = id;
     }
 
     public String getcName() {

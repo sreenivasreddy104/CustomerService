@@ -25,8 +25,13 @@ public class CustomerController {
     @Autowired
     CustomerRepo customerRepo;
 
-    @Autowired
+//    @Autowired
     PaymentService paymentService;
+
+    @Autowired
+    CustomerController (PaymentService paymentService){
+        this.paymentService = paymentService;
+    }
 
     @Value("${some.key:hi}")
     String message;
@@ -35,8 +40,8 @@ public class CustomerController {
     ResponseEntity<Customer> saveCustomer(@RequestBody NewCustomer newCustomer) {
         Customer customer = new Customer();
         BeanUtils.copyProperties(newCustomer, customer, "metaData");
-        paymentService.addPayment(customer);
-        return new ResponseEntity<Customer>(customerRepo.save(customer), HttpStatus.CREATED);
+        Customer updatedCustRes = paymentService.addPayment(customer);
+        return new ResponseEntity<Customer>(customerRepo.save(updatedCustRes), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/message")

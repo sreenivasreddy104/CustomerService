@@ -15,7 +15,7 @@ public class Payment {
     String itemName;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "customer_id")  // This is the owning side of the relationship
     private Customer customer;
 
     public Long getId() {
